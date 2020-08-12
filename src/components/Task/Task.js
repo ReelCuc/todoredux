@@ -2,17 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, ToggleButton } from 'react-bootstrap'
 
-import { taskDelete } from '../../store/main/main.actions'
+import { taskDelete, taskComplete } from '../../store/main/main.actions'
 
 import './Task.css'
-
 
 class Task extends Component {
 
   handleChange = () => {
-    const { completeTask, id } = this.props
+    const { id, dispatch, isCompleted } = this.props
 
-    completeTask(id)
+    dispatch(taskComplete(id, isCompleted))
   }
 
   handleClick = () => {
@@ -26,9 +25,7 @@ class Task extends Component {
 
     return (
       <div className='task'>
-
         <span className={isCompleted ? 'success' : ''} >{content}</span>
-
         <div className='bitns'>
         <ToggleButton
           type="checkbox"
@@ -40,7 +37,6 @@ class Task extends Component {
         >
           Done
         </ToggleButton>
-
         <Button
           variant='outline-dark'
           onClick={this.handleClick}

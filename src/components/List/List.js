@@ -6,38 +6,40 @@ import { ConnectedTask as Task } from '../Task/Task'
 import './List.css'
 
 class List extends Component {
-  // filterTasks = () => {
-  //   const { tasks, filter } = this.props
+  state = {
+    filteredTasks: []
+  }
 
-  //   let filterFn = () => true
+  componentDidUpdate(prevProps) {
+    if (this.props.filterType !== prevProps.filterType) {
+      if (this.props.filterType === 'success') {
+        const updatedTasks = this.props.tasks.filter(task => task.isCompleted)
 
-  //   switch (filter) {
-  //     case 'done':
-  //       filterFn = task => task.isCompleted
-  //       break
-  //     case 'incomplete':
-  //       filterFn = task => !task.isCompleted
-  //       break
-  //   }
+        return this.setState({ filteredTasks: updatedTasks })
+      }
 
-  //   return tasks.filter(filterFn)
-  // }
+      if (this.props.filterType === 'unsuccess') {
+        const updatedTasks = this.props.tasks.filter(task => !task.isCompleted)
+
+        return this.setState({ filteredTasks: updatedTasks })
+      }
+    }
+  }
 
   render() {
-    const { deleteTask, completeTask, tasks } = this.props
+    const { filteredTasks } = this.state
+    const { tasks, filterType } = this.props
 
-    // const tasks = this.filterTasks()
+    const currentTasks = filterType === 'all' ? tasks : filteredTasks
 
     return (
       <div className='list'>
-        {tasks.map(task => 
+        {currentTasks.map(task => 
           <Task
             key={task.id}
             id={task.id}
             content={task.content}
             isCompleted={task.isCompleted}
-            deleteTask={deleteTask}
-            completeTask={completeTask}
           />
         )}
       </div>
@@ -45,4 +47,4 @@ class List extends Component {
   }
 }
 
-export const ConnectedList = connect(store => ({ tasks: store.main.tasks }), null)(List)
+export const ConnectedList = connect(store => ({ tasks: store.main.tasks, filterType: store.main.filterType }), null)(List)

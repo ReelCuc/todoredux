@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, ButtonGroup, ToggleButton, Form } from 'react-bootstrap'
 
-import { taskAdd } from '../../store/main/main.actions'
+import { taskAdd, filterTypeChange } from '../../store/main/main.actions'
 
 import './Control.css'
 
@@ -22,7 +22,7 @@ class Control extends Component {
   }
 
   handleClick = () => {
-    const { addTask, dispatch } = this.props
+    const { dispatch } = this.props
 
     dispatch(taskAdd(this.state.inputValue))
 
@@ -30,13 +30,13 @@ class Control extends Component {
   }
 
   handleFilterChange = event => {
-    this.props.setFilter(event.target.value)
-  }
+    const { dispatch } = this.props
 
+    dispatch(filterTypeChange(event.target.value))
+  }
 
   render() {
     const { inputValue } = this.state
-    const { filter } = this.props
 
     return (
       <div className='control'>
@@ -47,7 +47,6 @@ class Control extends Component {
           onKeyDown={this.handleKeyDown}
           value={inputValue}
         />
-
         <Button
           className='addbtn'
           variant='info'
@@ -55,33 +54,29 @@ class Control extends Component {
         >
           +
         </Button>
-
         <ButtonGroup toggle className='filter'>
           <ToggleButton
             type='radio'
             variant='outline-secondary'
-            value='whole'
-            checked={filter === 'whole'}
+            value='all'
             onChange={this.handleFilterChange}
-            >
+          >
             All
           </ToggleButton>
           <ToggleButton
             type='radio'
             variant='outline-secondary'
-            value='done'
-            checked={filter === 'done'}
+            value='success'
             onChange={this.handleFilterChange}
-            >
+          >
             Done
           </ToggleButton>
           <ToggleButton
             type='radio'
             variant='outline-secondary'
-            value='incomplete'
-            checked={filter === 'incomplete'}
+            value='unsuccess'
             onChange={this.handleFilterChange}
-            >
+          >
             Incomplete
           </ToggleButton>
         </ButtonGroup>

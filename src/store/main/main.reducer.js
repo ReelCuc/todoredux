@@ -1,7 +1,8 @@
-import { TASK_ADD, TASK_DELETE } from './main.actions'
+import { TASK_ADD, TASK_DELETE, TASK_COMPLETE, FILTERTYPE_CHANGE } from './main.actions'
 
 const initialState = {
-  tasks: JSON.parse(localStorage.getItem('tasks')) || []
+  tasks: JSON.parse(localStorage.getItem('tasks')) || [],
+  filterType: 'all'
 }
 
 const saveTasks = tasks => localStorage.setItem('tasks', JSON.stringify(tasks))
@@ -21,16 +22,24 @@ const handleTaskAdd = (state, action) => {
 }
 
 const handleTaskDelete = (state, action) => {
-  if (action.id) {
-    const updatedTasks = state.tasks.filter(task => task.id !== action.id)
-    
-    saveTasks(updatedTasks)
+  const updatedTasks = state.tasks.filter(task => task.id !== action.id)
+  
+  saveTasks(updatedTasks)
 
-    return { ...state, tasks: updatedTasks }
-  }
-
-  return state
+  return { ...state, tasks: updatedTasks }
 }
+
+const toggleTask = (state, action) => {
+  const updatedTasks = state.tasks.map(task =>
+    task.id === action.payload.id ? ({ ...task, isCompleted: !action.payload.isCompleted }) : task
+  )
+
+  saveTasks(updatedTasks)
+
+  return { ...state, tasks: updatedTasks }
+}
+
+const handleFilterTypeChange = (state, action) => ({ ...state, filterType: action.filterType })
 
 export const mainReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -39,6 +48,12 @@ export const mainReducer = (state = initialState, action) => {
 
     case TASK_DELETE:
       return handleTaskDelete(state, action)
+
+    case TASK_COMPLETE:
+      return toggleTask(state, action)
+
+    case FILTERTYPE_CHANGE:
+      return handleFilterTypeChange(state, action)
 
     default:
       return state
