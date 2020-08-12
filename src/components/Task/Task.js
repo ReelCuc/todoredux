@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Button, ToggleButton } from 'react-bootstrap'
 
+import { taskDelete } from '../../store/main/main.actions'
+
 import './Task.css'
+
 
 class Task extends Component {
 
@@ -12,9 +16,9 @@ class Task extends Component {
   }
 
   handleClick = () => {
-    const { deleteTask, id } = this.props
+    const { id, dispatch } = this.props
 
-    deleteTask(id)
+    dispatch(taskDelete(id))
   }
 
   render() {
@@ -50,4 +54,4 @@ class Task extends Component {
   }
 }
 
-export { Task }
+export const ConnectedTask = connect(null, dispatch => ({ dispatch }))(Task)

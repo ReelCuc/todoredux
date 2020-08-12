@@ -21,13 +21,13 @@ class App extends Component {
   //   this.setState({ tasks: updatedTasks }, this.saveTasks)
   // }
 
-  deleteTask = id => {
-    const { tasks } = this.state
+  // deleteTask = id => {
+  //   const { tasks } = this.state
 
-    const updatedTasks = tasks.filter(task => task.id !== id)
+  //   const updatedTasks = tasks.filter(task => task.id !== id)
 
-    this.setState({ tasks: updatedTasks }, this.saveTasks)
-  }
+  //   this.setState({ tasks: updatedTasks }, this.saveTasks)
+  // }
 
   completeTask = id => {
     const { tasks } = this.state
