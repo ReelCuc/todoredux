@@ -1,0 +1,13 @@
+.control {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.filter {
+  margin-left: 5px;
+}
+
+.addbtn {
+  margin-left: 5px;
+}
